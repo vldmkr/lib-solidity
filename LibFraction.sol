@@ -75,7 +75,7 @@ library LibFraction {
         Fraction memory d;
         (c, d) = reduceToCommonDenominator(a, b);
         
-        return c.numerator >= d.numerator;
+        return c.numerator > d.numerator;
     }
 
     function mulByNumber(Fraction memory a, uint256 b)
