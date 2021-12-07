@@ -9,6 +9,7 @@ contract ExampleFractionList {
     using LibFractionList for LibFractionList.List;
 
     LibFractionList.List public list;
+    mapping (uint64 => address) public volunteers;
 
     constructor() {
         list.construct(); // NOTE: VERY IMPORTANT TO CONSTRUCT A LIST BEFORE USING
@@ -17,10 +18,11 @@ contract ExampleFractionList {
     function insert(uint256 numerator, uint256 denominator)
         external
     {
-        list.insert(LibFraction.Fraction(numerator, denominator));
+        uint64 id = list.insert(LibFraction.Fraction(numerator, denominator));
+        volunteers[id] = msg.sender;
     }
 
-    function iterate(uint256 multiplier) 
+    function iterate(uint256 multiplier)
         external
         view
         returns (uint256[] memory values)
@@ -31,7 +33,7 @@ contract ExampleFractionList {
 
         values = new uint256[](list.nodes.length);
         uint64 i = 0;
-        
+
         LibFractionList.Node memory head;
         for (uint64 next = list.root; next != LibFractionList.INVALID; next = head.next) {
             head = list.nodes[next];
@@ -49,7 +51,7 @@ contract ExampleFractionList {
         }
 
         values = new uint256[](list.nodes.length);
-        ids = new uint64[](list.nodes.length);    
+        ids = new uint64[](list.nodes.length);
 
         LibFractionList.Node memory head = list.nodes[list.root];
         uint64 prev = list.root;

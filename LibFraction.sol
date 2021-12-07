@@ -60,7 +60,7 @@ library LibFraction {
         uint256 lcm = _lcm(a.denominator, b.denominator);
         uint256 aNumerator = lcm.div(a.denominator).mul(a.numerator);
         uint256 bNumerator = lcm.div(b.denominator).mul(b.numerator);
-    
+
         return (Fraction(aNumerator, lcm), Fraction(bNumerator, lcm));
     }
 
@@ -71,11 +71,8 @@ library LibFraction {
         isValidDenominator(b)
         returns (bool)
     {
-        Fraction memory c;
-        Fraction memory d;
-        (c, d) = reduceToCommonDenominator(a, b);
-        
-        return c.numerator > d.numerator;
+        (a, b) = reduceToCommonDenominator(a, b);
+        return a.numerator > b.numerator;
     }
 
     function mulByNumber(Fraction memory a, uint256 b)
